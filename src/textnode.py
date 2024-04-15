@@ -1,3 +1,6 @@
+from htmlnode import LeafNode
+
+
 text_type_text = "text"
 text_type_bold = "bold"
 text_type_italic = "italic"
@@ -21,3 +24,21 @@ class TextNode:
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
+
+def text_node_to_html_node(text_node):
+    type = text_node.text_type
+    match type:
+            case "text":
+                return LeafNode(None, text_node.text)
+            case "bold":
+                return LeafNode("b", text_node.text)
+            case "italic":
+                return LeafNode("i", text_node.text)
+            case "code":
+                return LeafNode("code", text_node.text)
+            case "link":
+                return LeafNode("a", text_node.text, {"href": text_node.url})
+            case "image":
+                return LeafNode("img", "", {"src": text_node.url , "alt" : text_node.text })
+            case default:
+                raise ValueError (f"Invalid text type: {text_node.text_type}")
